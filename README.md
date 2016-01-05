@@ -47,14 +47,14 @@ All options set in next format:
 
 #### Required options
 
-Library use two required options:
+Library uses two required options:
 
 * src    - String, path to the source file
 * target - String, path to the output file
 
 #### Optional options
 
-* deepLevel - Number, by default set to 4. Deep of constructed tree. 
+* deepLevel - Number, by default set to 4. Depth of constructed tree. 
    Minimal - 1, Maximal - 6
 * replaceAt - String, by default is {toc.placeholder}. Place for TOC
 * skipAltH1 - Boolean, by default false. Indicate about skip underline '=' header H1 format
@@ -95,6 +95,9 @@ Structure:
       - [ Required options](#required-options)
       - [ Optional options](#optional-options)
     - [ Run](#run)
+  - [ Create your own build](#create-your-own-build)
+    - [ Requirements](#requirements)
+    - [ Build](#build)
 ```
 
 If no errors was occurred, file will be generated and you can see
