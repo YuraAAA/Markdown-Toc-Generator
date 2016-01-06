@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Bootstrap 3, from LayoutIt!</title>
+    <title> Markdown TOC generator!</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
 
 </head>
@@ -43,15 +43,28 @@
         </div>
 
 
-        <div class="row" style="margin-top: 1%">
+    </div>
+
+    <div class="alert alert-dismissable alert-success" style="white-space: pre-wrap; background-color: #ededed; color: #0f0f0f; border-color: #0f0f0f">
+    <#list data as d>
+        <br /> ${d} <#t>
+    </#list>
+    </div>
+
+    <div class="container-fluid" style="margin-top: 3%">
+
+        <div class="row">
             <div class="col-md-12">
-            <#list data as d>
-                <br>
-            ${d}
-            </#list>
+                <div class="alert alert-dismissable alert-success"
+                     style="background-color: transparent; border-width: 0">
+                    <a href="/" class="btn btn-info" role="button">Again</a>
+                </div>
             </div>
         </div>
+
+
     </div>
+
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
