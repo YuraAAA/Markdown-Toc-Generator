@@ -1,9 +1,13 @@
-package com.aizenberg;
+package com.aizenberg.core;
 
 import com.aizenberg.model.ModifyModel;
+import com.aizenberg.model.RequestModel;
 import com.aizenberg.utils.Utils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,84 +23,59 @@ public class Modifier {
     public static final String ALT_1_HEADER = "=";
     public static final String ALT_2_HEADER = "-";
 
-    public static final String TOC_HEADER = "**Table of Contents**  *generated with [MarkdownTocGenerator](https://github.com/YuraAAA/Markdown-Toc-Generator/)";
-
     private static DecimalFormat df2 = new DecimalFormat(".##");
 
 
-    private Configuration configuration;
-    private List<ModifyModel> rootModels = new ArrayList<ModifyModel>();
+    private List<ModifyModel> rootModels = new ArrayList<>();
 
 
-    public Modifier(Configuration configuration) {
-        this.configuration = configuration;
-    }
-
-    public void start() throws IOException {
-        FileInputStream fileInputStream = null;
+    public List<ModifyModel> start(RequestModel requestModel) throws IOException {
         BufferedReader br = null;
-        int patternLineNumber = -1;
+        InputStream inputStream = null;
+        InputStreamReader in = null;
         try {
-            int currentLine = 0;
-            String source = configuration.getSource();
-            int linesCount = Utils.getFileLines(source, -1);
+            inputStream = requestModel.getFile().getInputStream();
 
-            File inputFile = new File(source);
-            fileInputStream = new FileInputStream(inputFile);
-
-            br = new BufferedReader(new InputStreamReader(fileInputStream));
-
-            List<String> fileContent = new ArrayList<String>();
+            in = new InputStreamReader(inputStream);
+            br = new BufferedReader(in);
 
             String line;
             String previousLine = null;
 
 
             while ((line = br.readLine()) != null) {
-                ++currentLine;
-                boolean skipLine = false;
                 if (line.startsWith(DEFAULT_HEADER)) {
                     String trim = line.trim();
 
                     int count = getCount(trim);
-                    printProgress(currentLine, linesCount);
-                    if (count < 1 || count > configuration.getDeepLevel()) {
+                    if (count < 1 || count > requestModel.getDepth()) {
                         previousLine = line;
                         continue;
                     }
                     String headerName = line.substring(count);
                     rootModels.add(new ModifyModel(count, headerName, Utils.normalize(headerName)));
-                } else if (line.startsWith(ALT_1_HEADER) && !Utils.isEmpty(previousLine) && !configuration.isSkipAltH1()) {
+                } else if (line.startsWith(ALT_1_HEADER) && !Utils.isEmpty(previousLine) && !requestModel.getH1()) {
                     if (line.replaceAll(ALT_1_HEADER, "").isEmpty()) {
                         rootModels.add(new ModifyModel(1, previousLine, Utils.normalize(previousLine)));
                     }
-                } else if (line.startsWith(ALT_2_HEADER) && !Utils.isEmpty(previousLine) && !configuration.isSkipAltH2()) {
+                } else if (line.startsWith(ALT_2_HEADER) && !Utils.isEmpty(previousLine) && !requestModel.getH2()) {
                     if (line.replaceAll(ALT_2_HEADER, "").isEmpty()) {
                         rootModels.add(new ModifyModel(2, previousLine, Utils.normalize(previousLine)));
                     }
-                } else if (line.trim().equals(configuration.getReplaceAt())) {
-                    patternLineNumber = currentLine;
-                    skipLine = true;
                 }
-                if (!skipLine) fileContent.add(line);
                 previousLine = line;
             }
 
-            System.out.println("\n\nStructure: ");
-            for (ModifyModel modifyModel : rootModels) {
-                System.out.println(modifyModel.create());
-            }
-
-            saveToFile(fileContent, patternLineNumber, configuration.getDest());
 
         } finally {
-            Utils.closeStream(fileInputStream, br);
+            Utils.closeStream(br, in, inputStream);
         }
 
+        return rootModels;
 
     }
 
-    private void saveToFile(List<String> fileContent, int patternLineNumber, String outputPath) throws IOException {
+  /*  private void saveToFile(List<String> fileContent, int patternLineNumber, String outputPath) throws IOException {
         if (patternLineNumber == -1) {
             System.out.println("Pattern for replace not found!");
             return;
@@ -119,13 +98,8 @@ public class Modifier {
         } finally {
             Utils.closeStream(out, writer);
         }
-    }
+    }*/
 
-    private void printProgress(int currentLine, int linesCount) {
-        if (linesCount < 1) return;
-        float progress = (currentLine * 1f / linesCount * 1f) * 100f;
-        System.out.print(String.format("\rProgress %s %%", df2.format(progress)));
-    }
 
     private int getCount(String string) {
         int count = 0;
@@ -138,6 +112,5 @@ public class Modifier {
         }
         return count;
     }
-
 
 }

@@ -4,7 +4,6 @@ package com.aizenberg.model;
  * Created by Yuriy Aizenberg
  */
 public class ModifyModel {
-
     private static final String PATTERN = "%s- [%s](#%s)";
     private static final String AFFIX = "  ";
 

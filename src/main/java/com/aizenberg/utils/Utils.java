@@ -7,6 +7,7 @@ import java.io.*;
  */
 public class Utils {
 
+
     private static final String SPACES = " ";
     private static final String CODES = "%([abcdef]|\\d){2,2}";
     private static final String SPECIAL_CHARS = "[\\/?!:\\[\\]`.,()*\"';{}+=<>~\\$|#]";
@@ -24,17 +25,13 @@ public class Utils {
         return string == null || string.isEmpty();
     }
 
-    public static int getFileLines(String filePath, int defFaultValue) {
-        LineNumberReader lineNumberReader = null;
-        FileReader fileReader = null;
+    public static int getFileLines(InputStream inputStream, int defFaultValue) {
+        LineNumberReader lineNumberReader;
         try {
-            fileReader = new FileReader(filePath);
-            lineNumberReader = new LineNumberReader(fileReader);
+            lineNumberReader = new LineNumberReader(new InputStreamReader(inputStream));
             lineNumberReader.skip(Long.MAX_VALUE);
             return lineNumberReader.getLineNumber() + 1;
         } catch (IOException ignored) {
-        } finally {
-            closeStream(lineNumberReader, fileReader);
         }
         return defFaultValue;
     }
@@ -60,4 +57,5 @@ public class Utils {
 
                 .replaceAll(SPECIAL_CHARS, EMPTY).toLowerCase();
     }
+
 }
