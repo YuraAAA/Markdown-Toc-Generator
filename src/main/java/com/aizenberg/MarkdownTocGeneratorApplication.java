@@ -1,8 +1,11 @@
 package com.aizenberg;
 
+import com.aizenberg.controller.AppErrorController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -17,6 +20,9 @@ public class MarkdownTocGeneratorApplication {
         SpringApplication.run(MarkdownTocGeneratorApplication.class, args);
     }
 
+    @Autowired
+    private ErrorAttributes errorAttributes;
+
     @Bean
     public static FreeMarkerViewResolver viewResolver() {
         FreeMarkerViewResolver freeMarkerViewResolver = new FreeMarkerViewResolver();
@@ -24,6 +30,9 @@ public class MarkdownTocGeneratorApplication {
         freeMarkerViewResolver.setSuffix(".ftl");
         return freeMarkerViewResolver;
     }
+
+    @Bean
+    public AppErrorController appErrorController(){return new AppErrorController(errorAttributes);}
 
     @Bean
     public static CommonsMultipartResolver multipartResolver() {

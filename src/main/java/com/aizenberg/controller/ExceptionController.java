@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * Created by Yuriy Aizenberg
  */
-@ControllerAdvice
+
 public class ExceptionController {
 
     @ExceptionHandler(value = Exception.class)
