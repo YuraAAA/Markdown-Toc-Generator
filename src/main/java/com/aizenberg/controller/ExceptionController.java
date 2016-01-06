@@ -11,19 +11,11 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @ControllerAdvice
 public class ExceptionController {
-//ileSizeLimitExceededException
     @ExceptionHandler(value = Exception.class)
     public ModelAndView handleThrowables(Exception exception) {
         ModelAndView modelAndView = new ModelAndView("error");
         String message = exception.getMessage();
         modelAndView.addObject("error", Utils.isEmpty(message) ? "Unknown error" : message);
-        return modelAndView;
-    }
-
-    @ExceptionHandler(value = {FileUploadBase.FileSizeLimitExceededException.class, org.apache.tomcat.util.http.fileupload.FileUploadBase.FileSizeLimitExceededException.class})
-    public ModelAndView handleFileSizeLimit(Exception exception) {
-        ModelAndView modelAndView = new ModelAndView("error");
-        modelAndView.addObject("error", "Check your file size. Maximum - 1Mb");
         return modelAndView;
     }
 
