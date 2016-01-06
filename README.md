@@ -12,6 +12,9 @@
     - [ Requirements](#requirements)
     - [ Build](#build)
 
+**You can use Web version [here](http://proxyspring.cloudapp.net:8181/)**
+
+
 # Markdown-Toc-Generator
 Generator of TOC (Table of content) for github readme.md file based on java
 
