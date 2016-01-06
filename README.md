@@ -12,6 +12,10 @@
     - [ Requirements](#requirements)
     - [ Build](#build)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f0c298c101266aa056dca8c198164d4ea540b5ec
 **You can use Web version [here](http://proxyspring.cloudapp.net:8181/)**
 
 
