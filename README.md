@@ -13,7 +13,6 @@
     - [ Build](#build)
 
 
-**You can use Web version [here](http://95.213.159.164:8080/)**
 
 
 # Markdown-Toc-Generator
